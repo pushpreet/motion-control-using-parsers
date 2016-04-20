@@ -1,3 +1,5 @@
+%option prefix="maze_yy"
+
 %{
 #include <stdio.h>
 
@@ -7,8 +9,9 @@
 
 extern "C" int yylex();
 
-void yyerror(const char *str);
+void maze_yyerror(const char *str);
 
+int lineno = 1;
 %}
 
 %%
@@ -18,9 +21,10 @@ void yyerror(const char *str);
 "end"		return END;
 "obstacles"	return OBSTACLES;
 [=\(\),]	return (int) yytext[0];
-[0-9]+		{yylval.num = atoi(yytext); return NUMBER;}
-[ \t\n]		;
-.			{ECHO; yyerror("Unexpected Character");}
+[0-9]+		{maze_yylval.num = atoi(yytext); return NUMBER;}
+\n			{++lineno;}
+[ \t]		;
+.			{ECHO; maze_yyerror("Unexpected Character");}
 
 %%
 
