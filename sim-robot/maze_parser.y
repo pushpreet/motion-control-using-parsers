@@ -5,9 +5,8 @@
 
 #include "maze.h"
 
-extern "C" int yylex();
-extern "C" int yyparse();
-extern "C" FILE * maze_yyin;
+extern "C" int maze_yylex();
+extern "C" int maze_yyparse();
 extern int lineno;
 
 void maze_yyerror(const char *str);
@@ -59,32 +58,4 @@ coordinate 		: '(' NUMBER ',' NUMBER ')'			{coord.x = $2, coord.y = $4; $$ = coo
 void maze_yyerror(const char *str)
 {
 	fprintf(stderr,"%s at line: %d\n", str, lineno);
-}
-
-int main(int argc, char **argv)
-{
-	if (argc != 2)
-	{
-		printf("Incorrect Usage. Try ./a.out <filename> \n");
-		exit(0);
-	}
-
-	FILE* file = fopen(argv[1], "r");
-
-	if (file == NULL)
-	{
-		printf("Cannot open %s. \n", argv[1]);
-		exit(0);
-	}
-
-	maze_yyin = file;
-
-    do
-    {
-        maze_yyparse();
-    } while(!feof((maze_yyin)));
-
-    fclose(file);
-
-    return 0;
 }
