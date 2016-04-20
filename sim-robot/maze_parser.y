@@ -5,19 +5,32 @@
 
 #include "maze.h"
 
+extern "C" int yylex();
+extern "C" int yyparse();
 extern "C" FILE * yyin;
 
 void yyerror(const char *str);
 
+Maze maze;
+Coord coord;
 std::vector<Coord> obstacles;
 %}
 
+%union
+{
+	int num;
+	Coord coord;
+}
+
 %start maze_config
-%token SIZE START END OBSTACLES NUMBER
+%token SIZE START END OBSTACLES
+%token <num> NUMBER
+%type <coord> coordinate
 
 %%
 
 maze_config		: size_spec start_spec end_spec obstacle_list
+				| size_spec end_spec start_spec obstacle_list
 				;
 
 size_spec		: SIZE '=' coordinate				{maze.setSize($3);}
@@ -29,15 +42,15 @@ start_spec		: START '=' coordinate				{maze.markStart($3);}
 end_spec 		: END '=' coordinate				{maze.markEnd($3);}
 				;
 
-obstacle_list	: OBSTACLES '=' coordinate_list		{maze.markObstacles(obstacles);}
+obstacle_list	: 
+				| OBSTACLES '=' coordinate_list		{maze.markObstacles(obstacles);}
 				;
 
-coordinate_list	:
-				| coordinate						{obstacles.push_back($1);}
-				| coordinate_list coordinate
+coordinate_list	: coordinate						{obstacles.push_back($1);}
+				| coordinate_list coordinate		{obstacles.push_back($2);}
 				;
 
-coordinate 		: '(' NUMBER ',' NUMBER ')'			{$$ = new Coord($2, $4);}
+coordinate 		: '(' NUMBER ',' NUMBER ')'			{coord.x = $2, coord.y = $4; $$ = coord;}
 				;
 
 %%
@@ -63,8 +76,6 @@ int main(int argc, char **argv)
 		exit(0);
 	}
 
-	Maze maze;
-
 	yyin = file;
 
     do
@@ -77,10 +88,10 @@ int main(int argc, char **argv)
     Coord coord;
 
     coord = maze.getStart();
-    printf("Start : %d, %d", coord.x, coord.y);
+    printf("Start : %d, %d\n", coord.x, coord.y);
 
    	coord = maze.getEnd();
-    printf("End : %d, %d", coord.x, coord.y);
+    printf("End : %d, %d\n", coord.x, coord.y);
 
     return 0;
 }

@@ -1,11 +1,15 @@
+#pragma once
+
 struct Coord
 {
 	int x;
 	int y;
 
-	coord( int _x, int _y)
+	bool operator== (Coord coord)
 	{
-		x = _x;
-		y = _y
+		if (x == coord.x && y == coord.y)
+			return true;
+		else
+			return false;
 	}
 };

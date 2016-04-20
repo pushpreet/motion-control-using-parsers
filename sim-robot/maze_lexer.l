@@ -1,16 +1,24 @@
 %{
 #include <stdio.h>
-#include "y.tab.h"
+
+#include "coord.h"
+#include "maze.h"
+#include "maze_parser.tab.h"
+
+extern "C" int yylex();
+
+void yyerror(const char *str);
+
 %}
 
 %%
 
-size		return SIZE;
-start		return START;
-end			return END;
-obstacles	return OBSTACLES;
+"size"		return SIZE;
+"start"		return START;
+"end"		return END;
+"obstacles"	return OBSTACLES;
 [=\(\),]	return (int) yytext[0];
-[0-9]+		{yylval = atoi(yytext); return NUMBER;}
+[0-9]+		{yylval.num = atoi(yytext); return NUMBER;}
 [ \t\n]		;
 .			{ECHO; yyerror("Unexpected Character");}
 

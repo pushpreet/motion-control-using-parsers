@@ -75,8 +75,8 @@ bool Maze::markEnd(Coord _end)
 {
 	if (_end.x >= 0 && _end.x < rows && _end.y >= 0 && _end.y < columns)
 	{
-		start.x = _end.x;
-		start.y = _end.y;
+		end.x = _end.x;
+		end.y = _end.y;
 
 		return true;
 	}
@@ -88,11 +88,11 @@ bool Maze::markObstacles(Coord* _obstacles, int count)
 {
 	for (int i = 0; i < count; ++i)
 		if (_obstacles[i].x < 0 || _obstacles[i].x >= rows
-				|| _obstacles.y < 0 || _obstacles[i].y >= columns)
+				|| _obstacles[i].y < 0 || _obstacles[i].y >= columns)
 			return false;
 
 	for (int i = 0; i < count; ++i)
-		obstacles.push_back(_obstacles[i])
+		obstacles.push_back(_obstacles[i]);
 
 	return true;
 }
@@ -101,7 +101,7 @@ bool Maze::markObstacles(std::vector<Coord> _obstacles)
 {
 	for (int i = 0; i < _obstacles.size(); ++i)
 		if (_obstacles[i].x < 0 || _obstacles[i].x >= rows
-				|| _obstacles.y < 0 || _obstacles[i].y >= columns)
+				|| _obstacles[i].y < 0 || _obstacles[i].y >= columns)
 			return false;
 
 	obstacles = _obstacles;
@@ -152,24 +152,14 @@ bool Maze::getAdjacent(int x, int y, char* adj)
 
 	for (int i = 0; i < obstacles.size(); ++i)
 	{
-		switch (obstacles[i])
-		{
-			case top:
-				adj[0] = '1';
-				break;
-
-			case bottom:
-				adj[1] = '1';
-				break;
-
-			case left:
-				adj[2] = '1';
-				break;
-
-			case right:
-				adj[3] = '1';
-				break;
-		}
+		if (obstacles[i] == top)
+			adj[0] = '1';
+		if (obstacles[i] == bottom)
+			adj[1] = '1';
+		if (obstacles[i] == left)
+			adj[2] = '1';
+		if (obstacles[i] == right)
+			adj[3] = '1';
 	}
 
 	if (x == 0)				adj[0] = '1';
@@ -201,24 +191,14 @@ bool Maze::getAdjacent(Coord pos, char* adj)
 
 	for (int i = 0; i < obstacles.size(); ++i)
 	{
-		switch (obstacles[i])
-		{
-			case top:
-				adj[0] = '1';
-				break;
-
-			case bottom:
-				adj[1] = '1';
-				break;
-
-			case left:
-				adj[2] = '1';
-				break;
-
-			case right:
-				adj[3] = '1';
-				break;
-		}
+		if (obstacles[i] == top)
+			adj[0] = '1';
+		if (obstacles[i] == bottom)
+			adj[1] = '1';
+		if (obstacles[i] == left)
+			adj[2] = '1';
+		if (obstacles[i] == right)
+			adj[3] = '1';
 	}
 
 	if (pos.x == 0)				adj[0] = '1';
