@@ -42,7 +42,7 @@ start_spec		: START '=' coordinate				{maze.markStart($3);}
 end_spec 		: END '=' coordinate				{maze.markEnd($3);}
 				;
 
-obstacle_list	: 
+obstacle_list	:
 				| OBSTACLES '=' coordinate_list		{maze.markObstacles(obstacles);}
 				;
 
@@ -84,14 +84,6 @@ int main(int argc, char **argv)
     } while(!feof((yyin)));
 
     fclose(file);
-
-    Coord coord;
-
-    coord = maze.getStart();
-    printf("Start : %d, %d\n", coord.x, coord.y);
-
-   	coord = maze.getEnd();
-    printf("End : %d, %d\n", coord.x, coord.y);
 
     return 0;
 }
