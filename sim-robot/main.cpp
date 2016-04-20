@@ -7,20 +7,14 @@ extern "C" int maze_yyparse();
 extern "C" FILE * maze_yyin;
 extern Maze maze;
 
-int main(int argc, char **argv)
+bool parseMaze(char *filename)
 {
-	if (argc != 2)
-	{
-		printf("Incorrect Usage. Try ./a.out <filename> \n");
-		exit(0);
-	}
-
-	FILE* file = fopen(argv[1], "r");
+	FILE* file = fopen(filename, "r");
 
 	if (file == NULL)
 	{
-		printf("Cannot open %s. \n", argv[1]);
-		exit(0);
+		printf("Cannot open %s. \n", filename);
+		return false;
 	}
 
 	maze_yyin = file;
@@ -31,6 +25,20 @@ int main(int argc, char **argv)
     } while(!feof((maze_yyin)));
 
     fclose(file);
+
+	return true;
+}
+
+int main(int argc, char **argv)
+{
+	if (argc != 2)
+	{
+		printf("Incorrect Usage. Try ./a.out <filename> \n");
+		exit(0);
+	}
+
+	if (!parseMaze(argv[1]))
+		exit(0);
 
 	Coord coord;
 	coord = maze.getStart();
