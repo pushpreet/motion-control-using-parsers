@@ -1,4 +1,6 @@
 #include "maze.h"
+#include <stdio.h>
+#include <string.h>
 
 Maze::Maze(void)
 {
@@ -136,7 +138,7 @@ bool Maze::getAdjacent(int x, int y, char* adj)
 	if (x < 0 || x >= rows || y < 0 || y >= columns)
 		return false;
 
-	adj = "0000";
+	strcpy(adj, "0000");
 
 	Coord top, bottom, left, right;
 
@@ -164,18 +166,18 @@ bool Maze::getAdjacent(int x, int y, char* adj)
 
 	if (x == 0)				adj[0] = '1';
 	if (x == (rows-1))		adj[1] = '1';
-	if (y == 0)				adj[3] = '1';
-	if (y == (columns-1))	adj[4] = '1';
+	if (y == 0)				adj[2] = '1';
+	if (y == (columns-1))	adj[3] = '1';
 
 	return true;
 }
 
-bool Maze::getAdjacent(Coord pos, char* adj)
+bool Maze::getAdjacent(Coord pos, char *adj)
 {
 	if (pos.x < 0 || pos.x >= rows || pos.y < 0 || pos.y >= columns)
 		return false;
 
-	adj = "0000";
+	strcpy(adj, "0000");
 
 	Coord top, bottom, left, right;
 
@@ -187,7 +189,6 @@ bool Maze::getAdjacent(Coord pos, char* adj)
 	left.y = (pos.y == 0) ? 0 : (pos.y - 1);
 	right.x = pos.x;
 	right.y = (pos.y == (columns-1)) ? (columns-1) : pos.y + 1;
-
 
 	for (int i = 0; i < obstacles.size(); ++i)
 	{
@@ -203,8 +204,28 @@ bool Maze::getAdjacent(Coord pos, char* adj)
 
 	if (pos.x == 0)				adj[0] = '1';
 	if (pos.x == (rows-1))		adj[1] = '1';
-	if (pos.y == 0)				adj[3] = '1';
-	if (pos.y == (columns-1))	adj[4] = '1';
+	if (pos.y == 0)				adj[2] = '1';
+	if (pos.y == (columns-1))	adj[3] = '1';
 
 	return true;
+}
+
+void Maze::printMaze()
+{
+	for (int i = 0; i < rows ; ++i)
+	{
+		for (int j = 0; j < columns; ++j)
+		{
+			int obstacle = 0;
+
+			for (int k = 0; k < obstacles.size(); ++k)
+				if (obstacles[k].x == i && obstacles[k].y == j)
+					obstacle = 1;
+
+			if (start.x == i & start.y == j) printf("s ");
+			else if (end.x == i & end.y == j) printf("e ");
+			else printf("%d ", obstacle);
+		}
+		printf("\n");
+	}
 }

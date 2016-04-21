@@ -37,4 +37,6 @@ public:
 
 	bool getAdjacent(int x, int y, char* adj);
 	bool getAdjacent(Coord pos, char* adj);
+
+	void printMaze();
 };
