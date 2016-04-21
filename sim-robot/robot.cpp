@@ -8,8 +8,9 @@ Robot::Robot(void)
 
 Robot::Robot(Maze *_maze)
 {
+    position.x = 0;
+    position.y = 0;
     maze = _maze;
-    goToStart();
 }
 
 Coord Robot::getPosition()
@@ -21,11 +22,6 @@ void Robot::getPosition(int &x, int &y)
 {
     x = position.x;
     y = position.y;
-}
-
-void Robot::goToStart()
-{
-    position = maze->getStart();
 }
 
 void Robot::readEnvironment(char *environment)
@@ -75,4 +71,20 @@ bool Robot::move(char direction)
     }
 
     return false;
+}
+
+void Robot::getStatusMessage(char *msg)
+{
+    int dirIndex = 0;
+    char environment[5], directions[5];
+    readEnvironment(environment);
+
+    if (environment[0] == '0') directions[dirIndex++] = 't';
+    if (environment[1] == '0') directions[dirIndex++] = 'b';
+    if (environment[2] == '0') directions[dirIndex++] = 'l';
+    if (environment[3] == '0') directions[dirIndex++] = 'r';
+
+    directions[dirIndex] = '\0';
+
+    sprintf(msg, "NODE: (%d, %d), \"%s\"\n", position.x, position.y, directions);
 }

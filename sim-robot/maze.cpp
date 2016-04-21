@@ -135,6 +135,9 @@ void Maze::getEnd(int &x, int &y)
 
 bool Maze::getAdjacent(int x, int y, char* adj)
 {
+	x += start.x;
+	y += start.y;
+
 	if (x < 0 || x >= rows || y < 0 || y >= columns)
 		return false;
 
@@ -174,6 +177,9 @@ bool Maze::getAdjacent(int x, int y, char* adj)
 
 bool Maze::getAdjacent(Coord pos, char *adj)
 {
+	pos.x += start.x;
+	pos.y += start.y;
+
 	if (pos.x < 0 || pos.x >= rows || pos.y < 0 || pos.y >= columns)
 		return false;
 

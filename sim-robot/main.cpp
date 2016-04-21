@@ -45,16 +45,19 @@ int main(int argc, char **argv)
 
 	char adj[5];
 	Coord coord;
+	char status[20];
+
 	robot.move(DOWN);
 	robot.move(LEFT);
-	robot.move(RIGHT);
 	coord = robot.getPosition();
 	robot.readEnvironment(adj);
 
 	printf("(%d, %d)\n", coord.x, coord.y);
 	printf("%s\n", adj);
 
-	maze.printMaze();
+	robot.getStatusMessage(status);
+
+	printf(status);
 
     return 0;
 }

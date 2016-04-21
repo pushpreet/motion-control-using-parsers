@@ -21,7 +21,7 @@ public:
     Coord getPosition();
     void getPosition(int &x, int &y);
 
-    void goToStart();
     void readEnvironment(char *environment);
     bool move(char direction);
+    void getStatusMessage(char *msg);
 };
