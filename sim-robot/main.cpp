@@ -2,9 +2,10 @@
 #include <stdlib.h>
 
 #include "maze.h"
+#include "robot.h"
 
 extern "C" int maze_yyparse();
-extern "C" FILE * maze_yyin;
+extern "C" FILE *maze_yyin;
 extern Maze maze;
 
 bool parseMaze(char *filename)
@@ -40,10 +41,16 @@ int main(int argc, char **argv)
 	if (!parseMaze(argv[1]))
 		exit(0);
 
+	Robot robot(&maze);
+
+	char adj[5];
 	Coord coord;
-	coord = maze.getStart();
+	//robot.move(RIGHT);
+	coord = robot.getPosition();
+	maze.getAdjacent(robot.getPosition(), adj);
 
 	printf("( %d, %d)\n", coord.x, coord.y);
+	printf("%s\n", adj);
 
     return 0;
 }

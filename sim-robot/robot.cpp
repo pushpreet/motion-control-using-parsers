@@ -6,7 +6,7 @@ Robot::Robot(void)
     position.y = 0;
 }
 
-Robot::Robot(Maze &_maze)
+Robot::Robot(Maze *_maze)
 {
     maze = _maze;
     goToStart();
@@ -25,17 +25,17 @@ void Robot::getPosition(int &x, int &y)
 
 void Robot::goToStart()
 {
-    position = maze.getStart();
+    position = maze->getStart();
 }
 
 void Robot::readEnvironment(char *environment)
 {
-    maze.getAdjacent(position, environment);
+    maze->getAdjacent(position, environment);
 }
 
 bool Robot::move(char direction)
 {
-    char[4] environment;
+    char environment[5];
 
     readEnvironment(environment);
 

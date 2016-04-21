@@ -1,3 +1,5 @@
+#pragma once
+
 #include "maze.h"
 #include "coord.h"
 
@@ -14,7 +16,7 @@ private:
 
 public:
     Robot(void);
-    Robot(Maze &_maze);
+    Robot(Maze *_maze);
 
     Coord getPosition();
     void getPosition(int &x, int &y);
