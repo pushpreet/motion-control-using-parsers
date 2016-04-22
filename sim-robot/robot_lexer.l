@@ -20,7 +20,7 @@ int robot_lineno = 1;
 "NODE"		return NODE;
 [udlr]  	{robot_yylval.edge = yytext[0]; return EDGE;}
 [:\(\),\"]	return (int) yytext[0];
-[0-9]+		{robot_yylval.num = atoi(yytext); return NUMBER;}
+[-]?[0-9]+	{robot_yylval.num = atoi(yytext); return NUMBER;}
 \n			{++robot_lineno; return ENDL;}
 [ \t]		;
 .			{ECHO; robot_yyerror("Unexpected Character");}

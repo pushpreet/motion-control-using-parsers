@@ -12,4 +12,13 @@ struct Coord
 		else
 			return false;
 	}
+
+	Coord operator- (Coord coord)
+	{
+		Coord result;
+		result.x = x - coord.x;
+		result.y = y - coord.y;
+
+		return result;
+	}
 };

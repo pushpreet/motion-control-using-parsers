@@ -90,7 +90,7 @@ void Robot::getStatusMessage(char *msg)
 
     directions[dirIndex] = '\0';
 
-    endNode = maze->getEnd();
+    endNode = maze->getEnd() - maze->getStart();
 
     if (position.x == 0 && position.y == 0) strcpy(nodeType, "START");
     else if (position.x == endNode.x && position.y == endNode.y) strcpy(nodeType, "END");
