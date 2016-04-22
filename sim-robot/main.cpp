@@ -44,25 +44,14 @@ int main(int argc, char **argv)
 		exit(0);
 	}
 
+	printf("\nParsing Maze... ");
 	if (!parseMaze(argv[1]))
 		exit(0);
 
-	// char adj[5];
-	// Coord coord;
-	// char status[23];
+	printf("Parsed!\n");
+	maze.printMaze();
 
-	// robot.move(DOWN);
-	// robot.move(LEFT);
-	// coord = robot.getPosition();
-	// robot.readEnvironment(adj);
-
-	// printf("(%d, %d)\n", coord.x, coord.y);
-	// printf("%s\n", adj);
-
-	// robot.getStatusMessage(status);
-
-	// printf(status);
-
+	printf("\nMapping Maze... \n");
 	controller.mapMaze();
 
     return 0;

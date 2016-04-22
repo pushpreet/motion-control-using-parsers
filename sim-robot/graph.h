@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <stdio.h>
 #include "coord.h"
 
 struct Node
@@ -15,6 +16,7 @@ struct Node
 
     Node(void)
     {
+        //printf("Node created: (0, 0)\n");
         position.x = 0;
         position.y = 0;
         visited = false;
@@ -27,6 +29,7 @@ struct Node
 
     Node(int x, int y)
     {
+        //printf("Node created: (%d, %d)\n", x, y);
         position.x = x;
         position.y = y;
         visited = false;

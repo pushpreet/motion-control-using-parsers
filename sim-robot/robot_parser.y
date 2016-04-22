@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "controller.h"
 #include "graph.h"
 
@@ -17,13 +18,15 @@ int edgeIndex = 0;
 Coord robot_coord;
 char command;
 bool reached;
+bool completed;
+bool started = false;
 %}
 
 %union
 {
 	int num;
 	char edge;
-	char* edges;
+	char edges[5];
 	Coord coord;
 }
 
@@ -40,7 +43,7 @@ bool reached;
 message			: msg_prefix ':' msg_suffix ENDL
 				;
 
-msg_prefix		: START
+msg_prefix		: START								{if (!started) started = true; else completed = true;}
 				| END								{reached = true;}
 				| NODE
 				;
@@ -51,7 +54,7 @@ msg_suffix		: position ',' edge_list			{controller.visitNode($1, $3); getNextSte
 position		: '(' NUMBER ',' NUMBER ')'			{robot_coord.x = $2, robot_coord.y = $4; $$ = robot_coord;}
 				;
 
-edge_list 		: '"' edges '"'						{$$ = $2;}
+edge_list 		: '"' edges '"'						{strcpy($$, $2); edgeIndex = 0;}
 				;
 
 edges			: EDGE								{$$[edgeIndex] = $1; $$[++edgeIndex] = '\0';}
@@ -65,16 +68,26 @@ void getNextStep(Coord pos, char* edges)
 	for (int i = 0; edges[i] != '\0'; i++)
 	{
 		if (edges[i] == 'u')
-			if (!controller.isVisited(pos.x -1, pos.y)) {command = 'u'; break;}
+		{
+			if (!controller.isVisited(pos.x-1, pos.y)) {command = 'u'; break;}
+		}
 
 		else if (edges[i] == 'd')
-			if (!controller.isVisited(pos.x +1, pos.y)) {command = 'd'; break;}
+		{
+			if (!controller.isVisited(pos.x+1, pos.y)) {command = 'd'; break;}
+		}
 
 		else if (edges[i] == 'l')
-			if (!controller.isVisited(pos.x, pos.y -1)) {command = 'l'; break;}
+		{
+			if (!controller.isVisited(pos.x, pos.y-1)) {command = 'l'; break;}
+		}
 
 		else if (edges[i] == 'r')
-			if (!controller.isVisited(pos.x, pos.y +1)) {command = 'r'; break;}
+		{
+			if (!controller.isVisited(pos.x, pos.y+1)) {command = 'r'; break;}
+		}
+
+		command = 't';
 	}
 }
 
