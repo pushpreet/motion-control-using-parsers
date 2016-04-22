@@ -9,11 +9,20 @@ extern void scan_string(const char*);
 Controller::Controller(void)
 {
     robot = NULL;
+    end.x = 0;
+    end.y = 0;
 }
 
 Controller::Controller(Robot *_robot)
 {
     robot = _robot;
+    end.x = 0;
+    end.y = 0;
+}
+
+void Controller::markEnd()
+{
+    end = robot->getPosition();
 }
 
 void Controller::mapMaze()
@@ -63,6 +72,43 @@ void Controller::mapMaze()
     }
 
     printf("Mapping Complete.\n\n");
+
+    Coord start;
+    start.x = 0;
+    start.y = 0;
+
+    printf("START: (%d, %d)\n", 0, 0);
+    printf("END: (%d, %d)\n", end.x, end.y);
+}
+
+bool Controller::traverse(const char* path)
+{
+    for (int i  = 0; path[i] != '\0'; ++i)
+    {
+        printf("Reached (%d, %d) - ", robot->getPosition().x, robot->getPosition().y);
+
+        if (!robot->move(path[i])) return false;
+        else printf("Move: %c\n", path[i]);
+    }
+
+    printf("Reached (%d, %d) - ", robot->getPosition().x, robot->getPosition().y);
+    printf("Destination Reached.\n");
+
+    return true;
+}
+
+bool Controller::traverseShortest(Coord _start, Coord _end)
+{
+    return traverse(graph.shortestPath(_start, _end));
+}
+
+bool Controller::traverseStartToEnd()
+{
+    Coord start;
+    start.x = 0;
+    start.y = 0;
+
+    return traverseShortest(start, end);
 }
 
 bool Controller::isVisited(Coord pos)

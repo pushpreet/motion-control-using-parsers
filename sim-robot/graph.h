@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <stdio.h>
+#include <string>
 #include "coord.h"
 
 struct Node
@@ -52,4 +53,5 @@ public:
     Node* getNode(Coord pos);
     Node* getNode(int x, int y);
     bool visitNode(Coord pos, char *edges);
+    const char* shortestPath(Coord _start, Coord _dest);
 };

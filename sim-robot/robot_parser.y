@@ -44,7 +44,7 @@ message			: msg_prefix ':' msg_suffix ENDL
 				;
 
 msg_prefix		: START								{if (!started) started = true; else completed = true;}
-				| END								{reached = true;}
+				| END								{reached = true; controller.markEnd();}
 				| NODE
 				;
 

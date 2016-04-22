@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 typedef std::map<Node *, bool> dict;
+typedef std::map<Node *, char> trace;
 
 bool checkVisited(dict _dict, Node *node)
 {
@@ -171,4 +172,68 @@ bool Graph::visitNode(Coord pos, char *edges)
     printf("Visited (%d, %d) - ", temp->position.x, temp->position.y);
 
     return true;
+}
+
+const char* Graph::shortestPath(Coord _start, Coord _dest)
+{
+    Node *start = getNode(_start);
+    Node *dest = getNode(_dest);
+
+    dict isVisited;
+    std::queue<Node*> nodes;
+
+    nodes.push(start);
+    isVisited[start] = true;
+
+    Node *temp;
+
+    trace backTrack;
+
+    while(!nodes.empty())
+    {
+        temp = nodes.front();
+        nodes.pop();
+
+        if (temp == dest) break;
+
+        if ((temp->up != NULL) && (!checkVisited(isVisited, temp->up)))
+        {
+            isVisited[temp->up] = true;
+            nodes.push(temp->up);
+            backTrack[temp->up] = 'd';
+        }
+
+        if ((temp->down != NULL) && (!checkVisited(isVisited, temp->down)))
+        {
+            isVisited[temp->down] = true;
+            nodes.push(temp->down);
+            backTrack[temp->down] = 'u';
+        }
+
+        if ((temp->left != NULL) && (!checkVisited(isVisited, temp->left)))
+        {
+            isVisited[temp->left] = true;
+            nodes.push(temp->left);
+            backTrack[temp->left] = 'r';
+        }
+
+        if ((temp->right != NULL) && (!checkVisited(isVisited, temp->right)))
+        {
+            isVisited[temp->right] = true;
+            nodes.push(temp->right);
+            backTrack[temp->right] = 'l';
+        }
+    }
+
+    std::string path;
+
+    while(temp != start)
+    {
+        if (backTrack[temp] == 'u') {temp = temp->up; path.insert(0, 1, 'd');}
+        else if (backTrack[temp] == 'd') {temp = temp->down; path.insert(0, 1, 'u');}
+        else if (backTrack[temp] == 'l') {temp = temp->left; path.insert(0, 1, 'r');}
+        else if (backTrack[temp] == 'r') {temp = temp->right; path.insert(0, 1, 'l');}
+    }
+
+    return path.c_str();
 }

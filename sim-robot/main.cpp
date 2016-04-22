@@ -54,5 +54,9 @@ int main(int argc, char **argv)
 	printf("\nMapping Maze... \n");
 	controller.mapMaze();
 
+	printf("\nTraversing Shortest Path...\n");
+	controller.traverseStartToEnd();
+
+	printf("\n");
     return 0;
 }
