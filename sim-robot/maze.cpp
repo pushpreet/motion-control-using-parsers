@@ -90,7 +90,9 @@ bool Maze::markObstacles(Coord* _obstacles, int count)
 {
 	for (int i = 0; i < count; ++i)
 		if (_obstacles[i].x < 0 || _obstacles[i].x >= rows
-				|| _obstacles[i].y < 0 || _obstacles[i].y >= columns)
+				|| _obstacles[i].y < 0 || _obstacles[i].y >= columns
+				|| (_obstacles[i].x == start.x && _obstacles[i].y == start.y)
+				|| (_obstacles[i].x == end.x && _obstacles[i].y == end.y))
 			return false;
 
 	for (int i = 0; i < count; ++i)
@@ -103,7 +105,9 @@ bool Maze::markObstacles(std::vector<Coord> _obstacles)
 {
 	for (int i = 0; i < _obstacles.size(); ++i)
 		if (_obstacles[i].x < 0 || _obstacles[i].x >= rows
-				|| _obstacles[i].y < 0 || _obstacles[i].y >= columns)
+				|| _obstacles[i].y < 0 || _obstacles[i].y >= columns
+				|| (_obstacles[i].x == start.x && _obstacles[i].y == start.y)
+				|| (_obstacles[i].x == end.x && _obstacles[i].y == end.y))
 			return false;
 
 	obstacles = _obstacles;

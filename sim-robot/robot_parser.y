@@ -12,6 +12,7 @@ extern Controller controller;
 extern bool reached;
 
 void robot_yyerror(const char *str);
+void robot_yySemanticError(const char* str);
 void getNextStep(Coord pos, char* edges);
 
 int edgeIndex = 0;
@@ -91,7 +92,14 @@ void getNextStep(Coord pos, char* edges)
 	}
 }
 
+void robot_yySemanticError(const char* str)
+{
+    fprintf(stderr, "Semantic Error at line %d: %s \n", lineno, str);
+    exit(0);
+}
+
 void robot_yyerror(const char *str)
 {
-	fprintf(stderr,"%s at line: %d\n", str, robot_lineno);
+	fprintf(stderr,"Error at line %d: %s \n", lineno, str);
+	exit(0);
 }

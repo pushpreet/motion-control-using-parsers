@@ -20,7 +20,7 @@ int lineno = 1;
 "end"		return END;
 "obstacles"	return OBSTACLES;
 [=\(\),]	return (int) yytext[0];
-[0-9]+		{maze_yylval.num = atoi(yytext); return NUMBER;}
+[-]?[0-9]+	{maze_yylval.num = atoi(yytext); return NUMBER;}
 \n			{++lineno;}
 [ \t]		;
 .			{ECHO; maze_yyerror("Unexpected Character");}
