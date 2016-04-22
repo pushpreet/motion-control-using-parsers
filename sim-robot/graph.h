@@ -5,6 +5,8 @@
 #include <string>
 #include "coord.h"
 
+extern bool verbose;
+
 struct Node
 {
     Coord position;
@@ -17,7 +19,7 @@ struct Node
 
     Node(void)
     {
-        //printf("Node created: (0, 0)\n");
+        if (verbose) printf("(0, 0) ");
         position.x = 0;
         position.y = 0;
         visited = false;
@@ -30,7 +32,7 @@ struct Node
 
     Node(int x, int y)
     {
-        //printf("Node created: (%d, %d)\n", x, y);
+        if (verbose) printf("(%d, %d) ", x, y);
         position.x = x;
         position.y = y;
         visited = false;

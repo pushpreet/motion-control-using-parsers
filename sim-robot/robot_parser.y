@@ -94,12 +94,12 @@ void getNextStep(Coord pos, char* edges)
 
 void robot_yySemanticError(const char* str)
 {
-    fprintf(stderr, "Semantic Error at line %d: %s \n", lineno, str);
+    fprintf(stderr, "Semantic Error at line %d: %s \n", robot_lineno, str);
     exit(0);
 }
 
 void robot_yyerror(const char *str)
 {
-	fprintf(stderr,"Error at line %d: %s \n", lineno, str);
+	fprintf(stderr,"Error at line %d: %s \n", robot_lineno, str);
 	exit(0);
 }

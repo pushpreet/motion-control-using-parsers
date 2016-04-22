@@ -3,6 +3,7 @@
 extern char command;
 extern bool reached;
 extern bool completed;
+extern bool verbose;
 extern "C" int robot_yyparse();
 extern void scan_string(const char*);
 
@@ -35,7 +36,7 @@ void Controller::mapMaze()
     while(!completed)
     {
         robot->getStatusMessage(status);
-        //printf("%s", status);
+        if (verbose) printf("\n%s", status);
 
         scan_string(status);
         robot_yyparse();
@@ -53,7 +54,8 @@ void Controller::mapMaze()
                 else fprintf(stderr, "error: wrong trace\n");
 
                 robot->getStatusMessage(status);
-                //printf("%s", status);
+                //if (verbose) printf("\n\n%s", status);
+
                 scan_string(status);
                 robot_yyparse();
             }

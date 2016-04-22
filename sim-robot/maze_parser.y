@@ -7,7 +7,7 @@
 
 extern "C" int maze_yylex();
 extern "C" int maze_yyparse();
-extern int lineno;
+extern int maze_lineno;
 
 void maze_yyerror(const char *str);
 void maze_yySemanticError(const char* str);
@@ -64,12 +64,12 @@ coordinate 		: '(' NUMBER ',' NUMBER ')'			{if($2 < 0 || $4 < 0) maze_yySemantic
 
 void maze_yySemanticError(const char* str)
 {
-    fprintf(stderr, "Semantic Error at line %d: %s \n", lineno, str);
+    fprintf(stderr, "Semantic Error at line %d: %s \n", maze_lineno, str);
     exit(0);
 }
 
 void maze_yyerror(const char *str)
 {
-	fprintf(stderr,"Error at line %d: %s \n", lineno, str);
+	fprintf(stderr,"Error at line %d: %s \n", maze_lineno, str);
 	exit(0);
 }

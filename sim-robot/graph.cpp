@@ -138,6 +138,8 @@ bool Graph::visitNode(Coord pos, char *edges)
 {
     Node *temp = getNode(pos);
 
+    //if (verbose) printf("Node created: ");
+
     if (temp == NULL)
     {
         if (pos.x == 0 && pos.y == 0)
@@ -169,6 +171,7 @@ bool Graph::visitNode(Coord pos, char *edges)
     if (pos.x == 0 && pos.y == 0)
         root = temp;
 
+    if (verbose) printf("\n");
     printf("Visited (%d, %d) - ", temp->position.x, temp->position.y);
 
     return true;

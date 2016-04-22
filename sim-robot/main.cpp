@@ -13,6 +13,8 @@ extern Maze maze;
 
 Robot robot(&maze);
 Controller controller(&robot);
+bool verbose = false;
+bool simulate = false;
 
 bool parseMaze(char *filename)
 {
@@ -20,7 +22,7 @@ bool parseMaze(char *filename)
 
 	if (file == NULL)
 	{
-		printf("Cannot open %s. \n", filename);
+		fprintf(stderr, "Cannot open %s. \n", filename);
 		return false;
 	}
 
@@ -38,15 +40,22 @@ bool parseMaze(char *filename)
 
 int main(int argc, char **argv)
 {
-	if (argc != 2)
+	if (argc < 2)
 	{
-		printf("Incorrect Usage. Try ./a.out <filename> \n");
+		fprintf(stderr, "Incorrect Usage. Try ./a.out <filename> \n");
 		exit(0);
 	}
 
+	for (int i = 2; i < argc; ++i)
+	{
+		if (strcmp(argv[i], "-v") || strcmp(argv[i], "-verbose"))
+			verbose = true;;
+		if (strcmp(argv[i], "-sim") || strcmp(argv[i], "-simulate"))
+			simulate = true;
+	}
+
 	printf("\nParsing Maze... ");
-	if (!parseMaze(argv[1]))
-		exit(0);
+	if (!parseMaze(argv[1])) exit(0);
 
 	printf("Parsed!\n");
 	maze.printMaze();
