@@ -4,10 +4,9 @@
 #include <stdio.h>
 
 #include "coord.h"
-#include "maze.h"
 #include "maze_parser.tab.h"
 
-extern "C" int yylex();
+extern "C" int maze_yylex();
 
 void maze_yyerror(const char *str);
 

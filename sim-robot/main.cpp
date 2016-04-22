@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 
 	char adj[5];
 	Coord coord;
-	char status[20];
+	char status[23];
 
 	robot.move(DOWN);
 	robot.move(LEFT);

@@ -1,4 +1,5 @@
 #include "robot.h"
+#include <string.h>
 
 Robot::Robot(void)
 {
@@ -76,15 +77,24 @@ bool Robot::move(char direction)
 void Robot::getStatusMessage(char *msg)
 {
     int dirIndex = 0;
+    char nodeType[6];
     char environment[5], directions[5];
+    Coord endNode;
+
     readEnvironment(environment);
 
-    if (environment[0] == '0') directions[dirIndex++] = 't';
-    if (environment[1] == '0') directions[dirIndex++] = 'b';
+    if (environment[0] == '0') directions[dirIndex++] = 'u';
+    if (environment[1] == '0') directions[dirIndex++] = 'd';
     if (environment[2] == '0') directions[dirIndex++] = 'l';
     if (environment[3] == '0') directions[dirIndex++] = 'r';
 
     directions[dirIndex] = '\0';
 
-    sprintf(msg, "NODE: (%d, %d), \"%s\"\n", position.x, position.y, directions);
+    endNode = maze->getEnd();
+
+    if (position.x == 0 && position.y == 0) strcpy(nodeType, "START");
+    else if (position.x == endNode.x && position.y == endNode.y) strcpy(nodeType, "END");
+    else strcpy(nodeType, "NODE");
+
+    sprintf(msg, "%s: (%d, %d), \"%s\"\n", nodeType, position.x, position.y, directions);
 }
