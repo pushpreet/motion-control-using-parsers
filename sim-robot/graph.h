@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstddef>
 #include "coord.h"
 
@@ -45,5 +47,6 @@ public:
     Graph(void);
 
     Node* getNode(Coord pos);
+    Node* getNode(int x, int y);
     bool visitNode(Coord pos, char *edges);
 };

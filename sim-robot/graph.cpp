@@ -3,7 +3,7 @@
 #include <map>
 #include <stdio.h>
 
-typedef std::map<Node*, bool> dict;
+typedef std::map< Node*, bool> dict;
 
 Graph::Graph(void)
 {
@@ -66,6 +66,62 @@ Node* Graph::getNode(Coord pos)
     return NULL;
 }
 
+Node* Graph::getNode(int x, int y)
+{
+    if (root == NULL)
+        return NULL;
+
+    dict isVisited;
+    std::queue<Node*> nodes;
+
+    nodes.push(root);
+    isVisited[root] = false;
+
+    Node *temp;
+
+    while(!nodes.empty())
+    {
+        temp = nodes.front();
+        nodes.pop();
+
+        if (isVisited[temp]) continue;
+
+        else if (temp->position.x == x && temp->position.y == y)
+            return temp;
+
+        else
+        {
+            if (temp->up != NULL)
+            {
+                isVisited[temp->up] = false;
+                nodes.push(temp->up);
+            }
+
+            if (temp->down != NULL)
+            {
+                isVisited[temp->down] = false;
+                nodes.push(temp->down);
+            }
+
+            if (temp->left != NULL)
+            {
+                isVisited[temp->left] = false;
+                nodes.push(temp->left);
+            }
+
+            if (temp->right != NULL)
+            {
+                isVisited[temp->right] = false;
+                nodes.push(temp->right);
+            }
+        }
+
+        isVisited[temp] = true;
+    }
+
+    return NULL;
+}
+
 bool Graph::visitNode(Coord pos, char *edges)
 {
     Node *temp = getNode(pos);
@@ -86,16 +142,19 @@ bool Graph::visitNode(Coord pos, char *edges)
     else
         temp->visited = true;
 
-    if (edges[0] == 'u') temp->up    = new Node(pos.x-1, pos.y);
-    if (edges[1] == 'd') temp->down  = new Node(pos.x+1, pos.y);
-    if (edges[2] == 'l') temp->left  = new Node(pos.x, pos.y-1);
-    if (edges[3] == 'r') temp->right = new Node(pos.x, pos.y+1);
+    if (edges[0] == 'u')
+        temp->up = (getNode(pos.x-1, pos.y) == NULL) ? new Node(pos.x-1, pos.y) : getNode(pos.x-1, pos.y);
+    if (edges[1] == 'd')
+        temp->down = (getNode(pos.x+1, pos.y) == NULL) ? new Node(pos.x+1, pos.y) : getNode(pos.x+1, pos.y);
+    if (edges[2] == 'l')
+        temp->left = (getNode(pos.x, pos.y-1) == NULL) ? new Node(pos.x, pos.y-1) : getNode(pos.x, pos.y-1);
+    if (edges[3] == 'r')
+        temp->right = (getNode(pos.x, pos.y+1) == NULL) ? new Node(pos.x, pos.y+1) : getNode(pos.x, pos.y+1);
 
     if (pos.x == 0 && pos.y == 0)
-    {
         root = temp;
-        //delete temp;
-    }
+
+    delete temp;
 
     return true;
 }

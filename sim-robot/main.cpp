@@ -5,10 +5,14 @@
 #include "maze.h"
 #include "robot.h"
 #include "graph.h"
+#include "controller.h"
 
 extern "C" int maze_yyparse();
 extern "C" FILE *maze_yyin;
 extern Maze maze;
+
+Robot robot(&maze);
+Controller controller(&robot);
 
 bool parseMaze(char *filename)
 {
@@ -43,8 +47,6 @@ int main(int argc, char **argv)
 	if (!parseMaze(argv[1]))
 		exit(0);
 
-	// Robot robot(&maze);
-
 	// char adj[5];
 	// Coord coord;
 	// char status[23];
@@ -61,18 +63,7 @@ int main(int argc, char **argv)
 
 	// printf(status);
 
-	Graph graph;
-	Coord pos;
-	char edges[5];
-
-	pos.x = 0;
-	pos.y = 0;
-	strcpy(edges, "u-lr");
-
-	graph.visitNode(pos, edges);
-
-	if (graph.getNode(pos) == NULL)
-		printf("error\n");
+	controller.mapMaze();
 
     return 0;
 }

@@ -3,13 +3,14 @@
 %{
 #include <stdio.h>
 
+#include "coord.h"
 #include "robot_parser.tab.h"
 
 extern "C" int yylex();
 
 void robot_yyerror(const char *str);
 
-int lineno = 1;
+int robot_lineno = 1;
 %}
 
 %%
@@ -20,11 +21,17 @@ int lineno = 1;
 [udlr]  	{robot_yylval.edge = yytext[0]; return EDGE;}
 [:\(\),\"]	return (int) yytext[0];
 [0-9]+		{robot_yylval.num = atoi(yytext); return NUMBER;}
-\n			{++lineno; return ENDL}
+\n			{++robot_lineno; return ENDL;}
 [ \t]		;
 .			{ECHO; robot_yyerror("Unexpected Character");}
 
 %%
+
+
+void scan_string(const char* str)
+{
+    yy_scan_string(str);
+}
 
 int yywrap(void)
 {
