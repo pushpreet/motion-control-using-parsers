@@ -1,6 +1,7 @@
 #include "graph.h"
 #include <queue>
 #include <map>
+#include <stdio.h>
 
 typedef std::map<Node*, bool> dict;
 
@@ -11,21 +12,25 @@ Graph::Graph(void)
 
 Node* Graph::getNode(Coord pos)
 {
+    if (root == NULL)
+        return NULL;
+
     dict isVisited;
     std::queue<Node*> nodes;
 
-    queue.push(root);
-    isVisited[root] = true;
+    nodes.push(root);
+    isVisited[root] = false;
 
     Node *temp;
 
-    while(!queue.empty())
+    while(!nodes.empty())
     {
-        temp = queue.pop();
+        temp = nodes.front();
+        nodes.pop();
 
         if (isVisited[temp]) continue;
 
-        if (temp->position.x == pos.x && temp->position.y == pos.y)
+        else if (temp->position.x == pos.x && temp->position.y == pos.y)
             return temp;
 
         else
@@ -33,25 +38,25 @@ Node* Graph::getNode(Coord pos)
             if (temp->up != NULL)
             {
                 isVisited[temp->up] = false;
-                queue.push(temp->up);
+                nodes.push(temp->up);
             }
 
             if (temp->down != NULL)
             {
                 isVisited[temp->down] = false;
-                queue.push(temp->down);
+                nodes.push(temp->down);
             }
 
             if (temp->left != NULL)
             {
                 isVisited[temp->left] = false;
-                queue.push(temp->left);
+                nodes.push(temp->left);
             }
 
             if (temp->right != NULL)
             {
                 isVisited[temp->right] = false;
-                queue.push(temp->right);
+                nodes.push(temp->right);
             }
         }
 
@@ -69,7 +74,8 @@ bool Graph::visitNode(Coord pos, char *edges)
     {
         if (pos.x == 0 && pos.y == 0)
         {
-            temp = new Node();
+            root = new Node;
+            temp = new Node;
             temp->position.x = pos.x;
             temp->position.y = pos.y;
             temp->visited = true;
@@ -80,15 +86,16 @@ bool Graph::visitNode(Coord pos, char *edges)
     else
         temp->visited = true;
 
-    (edges[0] == 'u') ? temp->up    = new Node(pos.x-1, pos.y) : temp->up = NULL;
-    (edges[1] == 'd') ? temp->down  = new Node(pos.x+1, pos.y) : temp->down = NULL;
-    (edges[2] == 'l') ? temp->left  = new Node(pos.x, pos.y-1) : temp->left = NULL;
-    (edges[3] == 'r') ? temp->right = new Node(pos.x, pos.y+1) : temp->right = NULL;
+    if (edges[0] == 'u') temp->up    = new Node(pos.x-1, pos.y);
+    if (edges[1] == 'd') temp->down  = new Node(pos.x+1, pos.y);
+    if (edges[2] == 'l') temp->left  = new Node(pos.x, pos.y-1);
+    if (edges[3] == 'r') temp->right = new Node(pos.x, pos.y+1);
 
     if (pos.x == 0 && pos.y == 0)
+    {
         root = temp;
-
-    delete temp;
+        //delete temp;
+    }
 
     return true;
 }

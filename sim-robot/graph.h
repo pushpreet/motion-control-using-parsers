@@ -1,4 +1,5 @@
-#include "Coord.h"
+#include <cstddef>
+#include "coord.h"
 
 struct Node
 {
@@ -10,11 +11,28 @@ struct Node
     Node *left;
     Node *right;
 
+    Node(void)
+    {
+        position.x = 0;
+        position.y = 0;
+        visited = false;
+
+        up = NULL;
+        down = NULL;
+        left = NULL;
+        right = NULL;
+    }
+
     Node(int x, int y)
     {
         position.x = x;
         position.y = y;
         visited = false;
+
+        up = NULL;
+        down = NULL;
+        left = NULL;
+        right = NULL;
     }
 };
 

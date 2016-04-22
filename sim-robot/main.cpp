@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "maze.h"
 #include "robot.h"
+#include "graph.h"
 
 extern "C" int maze_yyparse();
 extern "C" FILE *maze_yyin;
@@ -41,23 +43,36 @@ int main(int argc, char **argv)
 	if (!parseMaze(argv[1]))
 		exit(0);
 
-	Robot robot(&maze);
+	// Robot robot(&maze);
 
-	char adj[5];
-	Coord coord;
-	char status[23];
+	// char adj[5];
+	// Coord coord;
+	// char status[23];
 
-	robot.move(DOWN);
-	robot.move(LEFT);
-	coord = robot.getPosition();
-	robot.readEnvironment(adj);
+	// robot.move(DOWN);
+	// robot.move(LEFT);
+	// coord = robot.getPosition();
+	// robot.readEnvironment(adj);
 
-	printf("(%d, %d)\n", coord.x, coord.y);
-	printf("%s\n", adj);
+	// printf("(%d, %d)\n", coord.x, coord.y);
+	// printf("%s\n", adj);
 
-	robot.getStatusMessage(status);
+	// robot.getStatusMessage(status);
 
-	printf(status);
+	// printf(status);
+
+	Graph graph;
+	Coord pos;
+	char edges[5];
+
+	pos.x = 0;
+	pos.y = 0;
+	strcpy(edges, "u-lr");
+
+	graph.visitNode(pos, edges);
+
+	if (graph.getNode(pos) == NULL)
+		printf("error\n");
 
     return 0;
 }
